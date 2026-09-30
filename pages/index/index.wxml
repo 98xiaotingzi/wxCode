@@ -1,0 +1,97 @@
+<view class="game-page">
+  <!-- 3D 场景背景：后续可直接替换图片，不影响前景布局 -->
+  <image class="scene-background" src="/assets/images/game-path-bg.png" mode="aspectFill" />
+  <view class="scene-shade"></view>
+
+  <view class="top-safe-area">
+    <view class="header-left">
+      <view class="setting-button" bindtap="handleSettings" hover-class="button-pressed">
+        <image class="header-icon btn-settings" mode="aspectFit" />
+        <text class="icon-preview icon-settings">⚙</text>
+      </view>
+      <view class="coin-counter">
+        <view class="coin-star-wrap">
+          <image class="header-icon icon-coin" mode="aspectFit" />
+          <text class="coin-star">★</text>
+        </view>
+        <text class="coin-value">{{coins}}</text>
+      </view>
+    </view>
+    <!-- 微信原生胶囊位于右上角，此处只预留安全空间 -->
+    <view class="native-capsule-space"></view>
+  </view>
+
+  <view class="game-stage">
+    <!-- 左侧悬浮功能组；image 标签均为正式素材占位 -->
+    <view class="side-actions side-actions-left">
+      <view class="side-action action-game-circle" bindtap="handleAction" data-name="游戏圈">
+        <view class="action-icon-shell blue-shell"><image class="action-icon btn-game-circle" mode="aspectFit" /><text class="icon-preview">🎮</text></view>
+        <text class="action-label">游戏圈</text>
+      </view>
+      <view class="side-action action-add-desktop" bindtap="handleAction" data-name="添加桌面">
+        <view class="action-icon-shell pink-shell"><image class="action-icon btn-add-desktop" mode="aspectFit" /><text class="icon-preview">📝</text></view>
+        <text class="action-label">添加桌面</text>
+      </view>
+      <view class="side-action action-invite" bindtap="handleAction" data-name="邀请有礼">
+        <view class="action-icon-shell red-shell"><image class="action-icon btn-invite" mode="aspectFit" /><text class="icon-preview">🎁</text></view>
+        <text class="action-label">邀请有礼</text>
+      </view>
+      <view class="side-action action-rank" bindtap="handleAction" data-name="排行榜">
+        <view class="action-icon-shell wood-shell">
+          <image class="action-icon btn-rank" mode="aspectFit" />
+          <view class="podium-preview"><text>2</text><text>1</text><text>3</text></view>
+        </view>
+        <text class="action-label">排行榜</text>
+      </view>
+    </view>
+
+    <!-- 由下至上的关卡轨道 -->
+    <view class="progress-track">
+      <view class="progress-line"></view>
+      <view class="level-node level-6 {{currentLevel >= 6 ? 'level-active' : ''}}">
+        <view class="wood-disc"><text>6</text></view>
+        <view class="reward-bubble reward-key">
+          <view class="bubble-tail"></view><image class="reward-icon icon-key" mode="aspectFit" />
+          <text class="reward-preview">🔒</text><text class="reward-label">钥匙</text>
+        </view>
+      </view>
+      <view class="level-node level-5 {{currentLevel >= 5 ? 'level-active' : ''}}"><view class="wood-disc"><text>5</text></view></view>
+      <view class="level-node level-4 {{currentLevel >= 4 ? 'level-active' : ''}}"><view class="wood-disc"><text>4</text></view></view>
+      <view class="level-node level-3 {{currentLevel >= 3 ? 'level-active' : ''}}"><view class="wood-disc"><text>3</text></view></view>
+      <view class="level-node level-2 level-active level-start">
+        <view class="wood-stack" aria-hidden="true">
+          <view class="wood-plank plank-back"></view><view class="wood-plank plank-middle"></view><view class="wood-plank plank-front"></view>
+        </view>
+        <view class="wood-disc"><text>2</text></view>
+        <view class="reward-bubble reward-pin">
+          <view class="bubble-tail"></view><image class="reward-icon icon-pin" mode="aspectFit" />
+          <view class="pin-preview"><text>📌</text><text>📌</text><text>📌</text></view><text class="reward-label">三合一</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 右侧悬浮功能组 -->
+    <view class="side-actions side-actions-right">
+      <view class="side-action action-subscribe" bindtap="handleAction" data-name="订阅有礼">
+        <view class="action-icon-shell pink-shell"><image class="action-icon btn-subscribe" mode="aspectFit" /><text class="icon-preview">🐷</text></view>
+        <text class="action-label">订阅有礼</text>
+      </view>
+      <view class="side-action action-favorite" bindtap="handleAction" data-name="收藏有礼">
+        <view class="action-icon-shell yellow-shell"><image class="action-icon btn-favorite" mode="aspectFit" /><text class="icon-preview star-preview">★</text></view>
+        <text class="action-label">收藏有礼</text>
+      </view>
+      <view class="side-action action-more" bindtap="handleAction" data-name="更多游戏">
+        <view class="action-icon-shell white-shell"><image class="action-icon btn-more-games" mode="aspectFit" /><text class="icon-preview puzzle-preview">🧩</text></view>
+        <text class="action-label">更多游戏</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="start-button" bindtap="handleStart" hover-class="start-button-pressed"><text>{{isStarting ? '准备中...' : '开始游戏'}}</text></button>
+
+  <view class="tab-bar">
+    <view class="tab-item" bindtap="handleTab" data-name="福利"><image class="tab-icon tab-piggy" mode="aspectFit" /><text class="tab-preview">🐷</text><text class="tab-star">★</text></view>
+    <view class="tab-item tab-item-active" bindtap="handleTab" data-name="首页"><image class="tab-icon tab-home" mode="aspectFit" /><text class="tab-preview">🏠</text></view>
+    <view class="tab-item" bindtap="handleTab" data-name="商店"><image class="tab-icon tab-shop" mode="aspectFit" /><text class="tab-preview">🏪</text></view>
+  </view>
+</view>
